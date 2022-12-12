@@ -133,6 +133,7 @@ class ItemController extends Controller
      */
     public function store(ItemRequest $request)
     {
+        // dd($request);
         $item_id = $this->repository->store($request);
 
         if($request->is_button ==0){
@@ -168,6 +169,7 @@ class ItemController extends Controller
      */
     public function update(ItemRequest $request, Item $item)
     {
+        // dd($request);
         $this->repository->update($item, $request);
 
         if($request->is_button ==0){
@@ -313,12 +315,19 @@ class ItemController extends Controller
         ]);
     }
 
-
+    
     public function stockOut()
     {
         $datas = Item::where('item_type','normal')->where('stock',0)->get();
+        dd($datas);
         return view('back.item.stockout',compact('datas'));
     }
+
+    // public function stockOut()
+    // {
+    //     $datas = Item::where('item_type','normal')->where('stock',0)->get();
+    //     return view('back.item.stockout',compact('datas'));
+    // }
 
 
 

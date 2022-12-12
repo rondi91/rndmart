@@ -3,6 +3,8 @@
 
 @section('content')
 
+{{-- {{ dd($datas[0]->name) }} --}}
+
 
 
 <!-- Start of Main Content -->

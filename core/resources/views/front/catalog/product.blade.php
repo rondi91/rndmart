@@ -10,6 +10,7 @@
 @endsection
 
 @section('content')
+
 <div class="page-title">
     <div class="container">
       <div class="row">
@@ -59,7 +60,7 @@
           <span class="product-badge bg-secondary border-default text-body
           ">{{__('out of stock')}}</span>
           @endif
-
+         
           @if($item->previous_price && $item->previous_price !=0)
           <div class="product-badge bg-goldenrod  ppp-t"> -{{PriceHelper::DiscountPercentage($item)}}</div>
           @endif
@@ -96,75 +97,78 @@
         @endphp
         <!-- Product Info-->
         <div class="col-xxl-7 col-lg-6 col-md-6">
-            <div class="details-page-top-right-content d-flex align-items-center">
-                <div class="div w-100">
-                    <input type="hidden" id="item_id" value="{{$item->id}}">
-                    <input type="hidden" id="demo_price" value="{{PriceHelper::setConvertPrice($item->discount_price)}}">
-                    <input type="hidden" value="{{PriceHelper::setCurrencySign()}}" id="set_currency">
-                    <input type="hidden" value="{{PriceHelper::setCurrencyValue()}}" id="set_currency_val">
-                    <input type="hidden" value="{{$setting->currency_direction}}" id="currency_direction">
+          <div class="details-page-top-right-content d-flex align-items-center">
+            <div class="div w-100">
+              <input type="hidden" id="item_id" value="{{$item->id}}">
+              <input type="hidden" id="demo_price" value="{{PriceHelper::setConvertPrice($item->discount_price)}}">
+              <input type="hidden" value="{{PriceHelper::setCurrencySign()}}" id="set_currency">
+              <input type="hidden" value="{{PriceHelper::setCurrencyValue()}}" id="set_currency_val">
+              <input type="hidden" value="{{$setting->currency_direction}}" id="currency_direction">
                     <h4 class="mb-2 p-title-main">{{$item->name}}</h4>
                     <div class="mb-3">
-                        <div class="rating-stars d-inline-block gmr-3">
+                      <div class="rating-stars d-inline-block gmr-3">
                         {!!renderStarRating($item->reviews->avg('rating'))!!}
-                        </div>
-                        @if ($item->is_stock())
-                            <span class="text-success  d-inline-block">{{__('In Stock')}}</span>
-                        @else
-                            <span class="text-danger  d-inline-block">{{__('Out of stock')}}</span>
-                        @endif
+                      </div>
+                      @if ($item->is_stock())
+                      <span class="text-success  d-inline-block">{{__('In Stock')}}</span>
+                      @else
+                      <span class="text-danger  d-inline-block">{{__('Out of stock')}}</span>
+                      @endif
                     </div>
-
-
+                    
+                    
                     @if($item->is_type == 'flash_deal')
                     @if (date('d-m-y') != \Carbon\Carbon::parse($item->date)->format('d-m-y'))
                     <div class="countdown countdown-alt mb-3" data-date-time="{{ $item->date }}">
                     </div>
                     @endif
                     @endif
-
+                    
                     <span class="h3 d-block price-area">
-                    @if ($item->previous_price != 0)
-                        <small class="d-inline-block"><del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del></small>
-                    @endif
-                    <span id="main_price" class="main-price">{{PriceHelper::grandCurrencyPrice($item)}}</span>
+                      @if ($item->previous_price != 0)
+                      <small class="d-inline-block"><del>{{PriceHelper::setPreviousPrice($item->previous_price)}}</del></small>
+                      @endif
+                      <span id="main_price" class="main-price">{{PriceHelper::grandCurrencyPrice($item)}}</span>
                     </span>
-
+                    
                     <p class="text-muted">{{$item->sort_details}} <a href="#details" class="scroll-to">{{__('Read more')}}</a></p>
-
+                    
                     <div class="row margin-top-1x">
-                        @foreach($attributes as $attribute)
-                        @if($attribute->options->count() != 0)
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                <label for="{{ $attribute->name }}">{{ $attribute->name }}</label>
-                                <select class="form-control attribute_option" id="{{ $attribute->name }}">
-                                    @foreach($attribute->options->where('stock','!=','0') as $option)
-                                    <option value="{{ $option->name }}" data-type="{{$attribute->id}}" data-href="{{$option->id}}" data-target="{{PriceHelper::setConvertPrice($option->price)}}">{{ $option->name }}</option>
-                                    @endforeach
-                                  </select>
-                                </div>
-                            </div>
-                            @endif
-                        @endforeach
+                      @foreach($attributes as $attribute)
+                      @if($attribute->options->count() != 0)
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label for="{{ $attribute->name }}">{{ $attribute->name }}</label>
+                          <select class="form-control attribute_option" id="{{ $attribute->name }}">
+                            @foreach($attribute->options->where('stock','!=','0') as $option)
+                            <option value="{{ $option->name }}" data-type="{{$attribute->id}}" data-href="{{$option->id}}" data-target="{{PriceHelper::setConvertPrice($option->price)}}">{{ $option->name }}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                      @endif
+                      @endforeach
                     </div>
                     <div class="row align-items-end pb-4">
-                        <div class="col-sm-12">
-                            @if ($item->item_type == 'normal')
-                            <div class="qtySelector product-quantity">
-                              <span class="decreaseQty subclick"><i class="fas fa-minus "></i></span>
-                              <input type="text" class="qtyValue cart-amount" value="1">
-                              <span class="increaseQty addclick"><i class="fas fa-plus"></i></span>
-                                <input type="hidden" value="3333" id="current_stock">
-                            </div>
-                            @endif
+                      <div class="col-sm-12">
+                        @if ($item->item_type == 'normal')
+                        <div class="qtySelector product-quantity">
+                          <span class="decreaseQty subclick"><i class="fas fa-minus "></i></span>
+                          <input type="text" class="qtyValue cart-amount" value="1">
+                          <span class="increaseQty addclick"><i class="fas fa-plus"></i></span>
+                          <input type="hidden" value="3333" id="current_stock">
+                        </div>
+                        @endif
+                        
                             <div class="p-action-button">
                               @if ($item->item_type != 'affiliate')
+
+                              {{-- {{ dd($item->is_stock(),'rondi') }} --}}
                                 @if ($item->is_stock())
                                 <button class="btn btn-primary m-0 a-t-c-mr" id="add_to_cart"><i class="icon-bag"></i><span>{{ __('Add to Cart') }}</span></button>
                                 <button class="btn btn-primary m-0" id="but_to_cart"><i class="icon-bag"></i><span>{{ __('Buy Now') }}</span></button>
                                 @else
-                                    <button class="btn btn-primary m-0"><i class="icon-bag"></i><span>{{__('Out of stock')}}</span></button>
+                                    <button class="btn btn-primary m-0"><i class="icon-bag"></i><span>{{__('Out oof stock')}}</span></button>
                                 @endif
                               @else
                               <a href="{{$item->affiliate_link}}" target="_blank" class="btn btn-primary m-0"><span><i class="icon-bag"></i>{{ __('Buy Now') }}</span></a>

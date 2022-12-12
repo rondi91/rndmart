@@ -31,16 +31,26 @@ class AttributeOptionController extends Controller
      */
     public function index(Item $item)
     {
+        // dd($item);
+        $datas = $item->join('attributes','attributes.item_id','=','items.id')
+                    ->join('attribute_options','attribute_options.attribute_id','=','attributes.id')
+                    ->select('attribute_options.id','attribute_options.attribute_id','attribute_options.name','attribute_options.keyword','attribute_options.stock','attribute_options.price',\DB::raw('attributes.name as attribute'),\DB::raw('attribute_options.stock*attribute_options.price as total'))
+                    ->where('items.id','=',$item->id)
+                    ->latest('id')
+                    ->get();
+        
+        
+        // $qtotal = $datas->selectRaw('attribute_options.stock*attribute_options.price AS total' )->sum('total');
+        
+        // dd($datas);
 
+        // DB::select('select * from users');
+        
         return view('back.item.attribute_option.index',[
             'item'  => $item,
             'curr' => Currency::where('is_default',1)->first(),
-            'datas' => $item->join('attributes','attributes.item_id','=','items.id')
-                    ->join('attribute_options','attribute_options.attribute_id','=','attributes.id')
-                    ->select('attribute_options.id','attribute_options.attribute_id','attribute_options.name','attribute_options.keyword','attribute_options.stock','attribute_options.price',\DB::raw('attributes.name as attribute'))
-                    ->where('items.id','=',$item->id)
-                    ->latest('id')
-                    ->get()
+            'datas' => $datas,
+            // 'total' => $qtotal
         ]);
     }
 
@@ -66,6 +76,7 @@ class AttributeOptionController extends Controller
      */
     public function store(AttributeOptionRequest $request, Item $item)
     {
+        // dd($request);
 
         $input = $request->all();
         $curr = Currency::where('is_default',1)->first();

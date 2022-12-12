@@ -293,8 +293,9 @@ class FrontendController extends Controller
 
     public function product($slug)
     {
-
+        
         $item = Item::with('category')->whereStatus(1)->whereSlug($slug)->firstOrFail();
+        // dd($item->attributes,'rondi');
         $video = explode('=',$item->video);
         return view('front.catalog.product',[
             'item'          => $item,

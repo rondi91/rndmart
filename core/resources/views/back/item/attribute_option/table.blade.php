@@ -1,3 +1,4 @@
+{{-- {{ dd($datas) }} --}}
 @foreach($datas as $data)
     <tr>
         <td>

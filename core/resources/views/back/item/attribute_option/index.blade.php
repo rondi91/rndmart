@@ -41,6 +41,9 @@
 					</tbody>
 
 				</table>
+       Total Quantity : {{ $datas->sum('stock') }}
+       <br>
+       Total : {{ $datas->sum('total') }}
 			</div>
 		</div>
 	</div>

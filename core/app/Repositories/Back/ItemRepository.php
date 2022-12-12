@@ -109,6 +109,7 @@ class ItemRepository
 
     public function update($item,$request)
     {
+        dd($request);
         $input = $request->all();
 
         if ( $request->file('photo')) {
@@ -207,7 +208,6 @@ class ItemRepository
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
     public function delete($item)
     {
         if($item->galleries()->count() > 0){
